@@ -35,6 +35,7 @@ public class ServiceRegistry {
         ZooKeeper zk = null;
         try {
             zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
+                @Override
                 public void process(WatchedEvent event) {
                     // 判断是否已连接ZK,连接后计数器递减.
                     if (event.getState() == Event.KeeperState.SyncConnected) {
@@ -45,9 +46,7 @@ public class ServiceRegistry {
 
             // 若计数器不为0,则等待.
             latch.await();
-        } catch (IOException e) {
-            LOGGER.error("", e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             LOGGER.error("", e);
         }
         return zk;
@@ -58,9 +57,7 @@ public class ServiceRegistry {
             byte[] bytes = data.getBytes();
             String path = zk.create(Constant.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
             LOGGER.debug("create zookeeper node ({} => {})", path, data);
-        } catch (KeeperException e) {
-            LOGGER.error("", e);
-        } catch (InterruptedException e) {
+        } catch (KeeperException | InterruptedException e) {
             LOGGER.error("", e);
         }
     }

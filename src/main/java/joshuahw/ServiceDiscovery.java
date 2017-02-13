@@ -22,7 +22,7 @@ public class ServiceDiscovery {
 
     private CountDownLatch latch = new CountDownLatch(1);
 
-    private volatile List<String> dataList = new ArrayList<String>();
+    private volatile List<String> dataList = new ArrayList<>();
 
     private String registryAddress;
 
@@ -54,6 +54,7 @@ public class ServiceDiscovery {
         ZooKeeper zk = null;
         try {
             zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
+                @Override
                 public void process(WatchedEvent event) {
                     if (event.getState() == Event.KeeperState.SyncConnected) {
                         latch.countDown();
@@ -61,9 +62,7 @@ public class ServiceDiscovery {
                 }
             });
             latch.await();
-        } catch (IOException e) {
-            LOGGER.error("", e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             LOGGER.error("", e);
         }
         return zk;
@@ -79,16 +78,14 @@ public class ServiceDiscovery {
                     }
                 }
             });
-            List<String> dataList = new ArrayList<String>();
+            List<String> dataList = new ArrayList<>();
             for (String node : nodeList) {
                 byte[] bytes = zk.getData(Constant.ZK_REGISTRY_PATH + "/" + node, false, null);
                 dataList.add(new String(bytes));
             }
             LOGGER.debug("node data: {}", dataList);
             this.dataList = dataList;
-        } catch (KeeperException e) {
-            LOGGER.error("", e);
-        } catch (InterruptedException e) {
+        } catch (KeeperException | InterruptedException e) {
             LOGGER.error("", e);
         }
     }
