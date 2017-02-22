@@ -27,6 +27,12 @@
             <artifactId>rpc-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- CGLib -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${version.cglib}</version>
+        </dependency>
         <!-- RPC Registry with ZooKeeper -->
         <dependency>
             <groupId>joshuahw</groupId>
