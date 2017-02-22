@@ -66,15 +66,15 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup();     // 这个是用于serversocketchannel的eventloop
+        EventLoopGroup workerGroup = new NioEventLoopGroup();   // 这个是用于处理accept到的channel
         try {
             // 创建并初始化 Netty 服务端 Bootstrap 对象
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workerGroup);
-            bootstrap.channel(NioServerSocketChannel.class);
+            bootstrap.group(bossGroup, workerGroup);            // 设置时间循环对象，前者用来处理accept事件，后者用于处理已经建立的连接的io
+            bootstrap.channel(NioServerSocketChannel.class);       // 用它来建立新accept的连接，用于构造serversocketchannel的工厂类
             bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
+                @Override   // 当新连接accept的时候，这个方法会调用
                 public void initChannel(SocketChannel channel) throws Exception {
                     ChannelPipeline pipeline = channel.pipeline();
                     pipeline.addLast(new RpcDecoder(RpcRequest.class)); // 解码 RPC 请求
@@ -99,7 +99,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             }
             LOGGER.debug("server started on port {}", port);
             // 关闭 RPC 服务器
-            future.channel().closeFuture().sync();
+            future.channel().closeFuture().sync();  // 相当于在这里阻塞，直到serverchannel关闭
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
