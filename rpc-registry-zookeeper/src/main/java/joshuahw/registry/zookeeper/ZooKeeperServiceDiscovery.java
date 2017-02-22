@@ -11,9 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 基于 ZooKeeper 的服务发现
- *
- * @author huangyong
- * @since 1.0.0
  */
 public class ZooKeeperServiceDiscovery implements ServiceDiscovery {
 
