@@ -1,6 +1,7 @@
 package joshuahw.sample.service;
 
 import joshuahw.sample.api.HelloService;
+import joshuahw.sample.api.Person;
 import joshuahw.server.RpcService;
 
 /**
@@ -14,4 +15,8 @@ public class HelloServiceImpl implements HelloService {
         return "Hello! " + name;
     }
 
+    @Override
+    public String hello(Person person) {
+        return "Hello! " + person.getFirstName() + " " + person.getLastName();
+    }
 }
