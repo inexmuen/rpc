@@ -11,8 +11,10 @@ target/
 
 # eclipse ignore
 .settings/
-.project
+.metadata/
 .classpath
+.project
+Servers/
 
 # idea ignore
 .idea/
