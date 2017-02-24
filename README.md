@@ -80,7 +80,7 @@ create service node: /registry/joshuahw.sample.api.HelloService
 create address node: /registry/joshuahw.sample.api.HelloService/address-0000000000
 register service: joshuahw.sample.api.HelloService => 127.0.0.1:2017
 server started on port 2017
-``` 
+```
 
 ### 4. 配置并调用RPC服务
 
