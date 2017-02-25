@@ -112,3 +112,8 @@ discover service: joshuahw.sample.api.HelloService => 127.0.0.1:2017
 time: 400ms
 Hello! Joshua
 ```
+
+## ToDo
+
+- 使用redis进行服务注册和发现
+- 使用JSON-RPC进行通信
