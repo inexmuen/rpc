@@ -11,17 +11,40 @@
 - `Protostuff`: RPC通讯过程中的序列化/反序列化
 - `Zookeeper`: 服务注册与发现
 
+> 主要是使用`Netty`构建server，同时在服务启动时向ZK注册服务`serviceAddress`, `servicePort`等信息。使用client发送请求时，将请求动态代理成对netty server的请求。server和client的通讯使用`protostuff`进行编码和解码。
+
+<!-- more -->
+
 ## Modules
 
 - `rpc-client`: RPC client实现
+	- `RpcClient`: RPC客户端
+	- `RpcProxy`: RPC代理，用于创建RPC请求动态代理对象
 - `rpc-common`
-	- `bean`: RPC request & response
-	- `codec`: RPC encode & decode
-	- `util`: 工具类 
+	- `bean`
+		- `RpcRequest`: RPC请求结构体
+		- `RpcResponse`: RPC响应结构体
+	- `codec`
+		- `RpcDecoder`: RPC通信解码
+		- `RpcEncoder`: RPC通信编码
+	- `util`
+		- `CollectionUtil`: 集合工具类
+		- `SerializationUtil`: 序列化/反序列化工具类
+		- `StringUtil`: 字符串工具类
 - `rpc-registry`: 服务注册和发现接口
+	- `ServiceDiscovery`: 服务发现接口
+	- `ServiceRegistry`: 服务注册接口
 - `rpc-registry-zookeeper`: 基于zk的服务注册和发现
+	- `ZooKeeperServiceDiscovery`: 基于zk的服务发现实现
+	- `ZooKeeperServiceRegistry`: 基于zk的服务注册实现
 - `rpc-sample`: RPC框架的使用代码示例
+	- `rpc-sample-api`: RPC接口定义
+	- `rpc-sample-demo`: RPC请求client Demo
+	- `rpc-sample-service`: RPC接口实现
 - `rpc-server`: RPC server实现
+	- `RpcServer`: RPC服务器
+	- `RpcServerHandler`: RPC请求处理
+	- `RpcService`: RPC服务注解
 
 ## Usage
 
@@ -70,7 +93,7 @@ public class RpcBootstrap {
 - `rpc.service_address`: RPC服务地址
 - `rpc.registry_address`: RPC服务注册地址
 
-启动信息如下:
+启动日志如下:
 
 ```
 start service
@@ -103,7 +126,7 @@ public class HelloClient {
 }
 ```
 
-对应的日志如下:
+调用日志如下:
 
 ```
 connect zookeeper
