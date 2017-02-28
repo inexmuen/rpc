@@ -140,3 +140,4 @@ Hello! Joshua
 
 - 使用redis进行服务注册和发现
 - 使用JSON-RPC进行通信
+- Python基于`thrift`和`decorator`实现
