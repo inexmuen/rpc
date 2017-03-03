@@ -1,10 +1,13 @@
 package joshuahw.common.bean;
 
+import java.io.Serializable;
+
 /**
  * RPC Response
  */
-public class RpcResponse {
+public class RpcResponse implements Serializable {
 
+    private static final long serialVersionUID = -4047812895309651522L;
     private String requestId;
     private Exception exception;
     private Object result;
